@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <random>
 
 int guess(int iteration)
@@ -6,6 +7,21 @@ int guess(int iteration)
     int val{};
     std::cout << "Guess #" << iteration << ": ";
     std::cin >> val;
+
+    if (std::cin.fail())
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        continue;
+    }
+
+    if (val < 1 || val > 99)
+    {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        continue;
+    }
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return val;
 }
 
@@ -40,8 +56,13 @@ char ask_again()
     std::cout << "Would you like to play again (y/n)? ";
     std::cin >> again;
 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     if (again != 'y' && again != 'n')
         ask_again();
+
+    if (again == 'n')
+        std::cout << "Thank You for playing.\n";
 
     return again;    
 }
