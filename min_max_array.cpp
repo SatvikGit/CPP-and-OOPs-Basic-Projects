@@ -1,4 +1,5 @@
 #include <utility>
+#include <limits>
 #include <iostream>
 #include <vector>
 
@@ -39,25 +40,38 @@ void printArray(const std::vector<T>& vec)
 
 }
 
-template <typename T>
-std::vector<T> takeInput()
+std::vector<int> takeInput()
 {
-    iuediindfck
+    std::vector<int> vec{};
+    int input{};
+
+    std::cout << "Enter numbers to add (use -1 to stop): ";
+    while (true)
+    {
+        std::cin >> input;
+        if (input == -1)
+            break;
+
+        if (!std::cin) // if the previous extraction failed
+        {
+            std::cin.clear(); // put us back in 'normal' operation mode
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // and remove the bad input
+            continue;
+        }
+
+        vec.emplace_back(input);
+    }
+
+    return vec;
 }
 
 int main(){
-    std::vector v1 { 3, 8, 2, 5, 7, 8, 3 };
-    std::vector v2 { 5.5, 2.7, 3.3, 7.6, 1.2, 8.8, 6.6 };
+    std::vector v{ takeInput() };
 
-    auto m1{ findMaxMin(v1) };
-    printArray(v1);
-    std::cout << "The min element has index " << m1.first << " and value " << v1[m1.first] << '\n';
-    std::cout << "The max element has index " << m1.second << " and value " << v1[m1.second] << '\n' << '\n';
-
-    auto m2{ findMaxMin(v2) };
-    printArray(v2);
-    std::cout << "The min element has index " << m2.first << " and value " << v2[m2.first] << '\n';
-    std::cout << "The max element has index " << m2.second << " and value " << v2[m2.second] << '\n' << '\n';
+    auto m{ findMaxMin(v) };
+    printArray(v);
+    std::cout << "The min element has index " << m.first << " and value " << v[m.first] << '\n';
+    std::cout << "The max element has index " << m.second << " and value " << v[m.second] << '\n' << '\n';
 
     return 0;
 }
