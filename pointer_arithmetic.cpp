@@ -1,17 +1,19 @@
 #include <iostream>
 
-void printCString(const char* str)
+void printCString(const char* str, int length)
 {
-    for (; *str == '\0'; str++)
+    const char* ptr{ str + length };
+    for (; ptr >= str; ptr--)
     {
-        std::cout << *str;
+        std::cout << *ptr;
     }
 
     std::cout << '\n';
 }
 
 int main(){
-    printCString("Hello World!");
+    std::string str{ "Hello World!" }; 
+    printCString("Hello World!", str.length());
 
     return 0;
 }
